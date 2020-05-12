@@ -27,7 +27,7 @@ function renderCafe(doc){
 }
 
 // getting data
-db.collection('Cofee_hotel').get().then(snapshot => {
+db.collection('Cofee_hotel').where('city', '==', 'Faisalabad').get().then(snapshot => {
     snapshot.docs.forEach(doc => {
         renderCafe(doc);
     });
