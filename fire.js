@@ -1,20 +1,20 @@
-const cafeList = document.querySelector('#cafe-list');
-const form = document.querySelector('#add-cafe-form');
+const cafeList = document.querySelector('#todo-list');
+const form = document.querySelector('#add-todo');
 
 // create element & render cafe
 function renderCafe(doc){
     let li = document.createElement('li');
-    let name = document.createElement('span');
-    let city = document.createElement('span');
+    let title = document.createElement('span');
+    let disc = document.createElement('span');
     let cross = document.createElement('div');
 
     li.setAttribute('data-id', doc.id);
-    name.textContent = doc.data().name;
-    city.textContent = doc.data().city;
+    title.textContent = doc.data().title;
+    disc.textContent = doc.data().disc;
     cross.textContent = 'x';
 
-    li.appendChild(name);
-    li.appendChild(city);
+    li.appendChild(title);
+    li.appendChild(disc);
     li.appendChild(cross);
 
     cafeList.appendChild(li);
@@ -22,7 +22,7 @@ function renderCafe(doc){
   cross.addEventListener('click', (e) => {
     e.stopPropagation();
     let id = e.target.parentElement.getAttribute('data-id');
-    db.collection('Cofee_hotel').doc(id).delete();
+    db.collection('todos').doc(id).delete();
 });
 }
 
@@ -36,17 +36,17 @@ function renderCafe(doc){
 // saving data
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    db.collection('Cofee_hotel').add({
-        name: form.name.value,
-        city: form.city.value
+    db.collection('todos').add({
+        title: form.title_todo.value,
+        disc: form.todo_des.value
     });
-    form.name.value = '';
-    form.city.value = '';
+    form.title.value = '';
+    form.disc.value = '';
 });
 
 // real-time listener
 
-db.collection('Cofee_hotel').orderBy('city').onSnapshot(snapshot => {
+db.collection('todos').orderBy('title').onSnapshot(snapshot => {
     let changes = snapshot.docChanges();
     changes.forEach(change => {
         console.log(change.doc.data());
